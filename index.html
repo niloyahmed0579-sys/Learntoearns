@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Learn to Earn</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f4f8}
+header{background:#0a7cff;color:#fff;padding:15px;display:flex;justify-content:space-between}
+.menu{cursor:pointer;font-size:22px}
+.dropdown{display:none;position:absolute;right:10px;top:60px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.2)}
+.dropdown button{border:none;width:100%;padding:10px;background:#fff;cursor:pointer}
+.dropdown button:hover{background:#eee}
+.card{background:#fff;margin:15px;padding:15px;border-radius:8px}
+.hidden{display:none}
+button{padding:8px 12px;background:#0a7cff;color:#fff;border:none;cursor:pointer}
+input{padding:8px;margin:5px}
+</style>
+</head>
+<body>
+
+<header>
+<h2>Learn to Earn</h2>
+<div class="menu" onclick="toggleMenu()">☰</div>
+<div class="dropdown" id="menu">
+<button onclick="showLogin('student')">Student Login</button>
+<button onclick="showLogin('admin')">Admin Login</button>
+</div>
+</header>
+
+<div class="card">
+<h1>Buy Everything Safe</h1>
+<p>Online Shopping & Learning Platform</p>
+</div>
+
+<div id="loginBox" class="card hidden">
+<h3 id="loginTitle"></h3>
+<input id="uid" placeholder="ID">
+<button onclick="login()">Login</button>
+<p id="msg"></p>
+</div>
+
+<div id="studentDash" class="hidden card">
+<h3 id="welcome"></h3>
+<p>Status: <b id="status"></b></p>
+<p>Reference ID: <b>A1001</b></p>
+<p>Balance: ৳<b id="balance">500</b></p>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div id="adminDash" class="hidden card">
+<h3>Admin Panel</h3>
+<input id="activeID" placeholder="Student ID">
+<button onclick="activate()">Activate</button>
+<ul id="activeList"></ul>
+<button onclick="logout()">Logout</button>
+</div>
+
+<script>
+let activeIDs=["25002D"];
+let role="";
+
+function toggleMenu(){
+ menu.style.display=menu.style.display=="block"?"none":"block";
+}
+function showLogin(r){
+ role=r;
+ loginBox.classList.remove("hidden");
+ loginTitle.innerText=r.toUpperCase()+" LOGIN";
+}
+function login(){
+ let id=uid.value;
+ if(role=="student"){
+   if(!activeIDs.includes(id)){msg.innerText="Inactive ID";return;}
+   studentDash.classList.remove("hidden");
+   welcome.innerText="Welcome "+id;
+   status.innerText="Active";
+ }
+ if(role=="admin"){
+   adminDash.classList.remove("hidden");
+   showActive();
+ }
+ loginBox.classList.add("hidden");
+}
+function activate(){
+ let id=activeID.value;
+ if(!activeIDs.includes(id)){
+   activeIDs.push(id);
+   showActive();
+ }
+}
+function showActive(){
+ activeList.innerHTML="";
+ activeIDs.forEach(i=>{
+  let li=document.createElement("li");
+  li.innerText=i;
+  activeList.appendChild(li);
+ });
+}
+function logout(){location.reload();}
+</script>
+
+</body>
+</html>
